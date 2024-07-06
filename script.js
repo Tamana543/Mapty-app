@@ -10,7 +10,8 @@ const inputElevation = document.querySelector('.form__input--elevation');
 
 class Workout {
   date = new Date();
-  id = (Date.now + '').slice(-10);
+  id = (Date.now() + '').slice(-10);
+  clicks = 0;
   constructor(coords, distance, duration) {
     this.coords = coords; //{lit,lang}
     this.distance = distance;
@@ -35,6 +36,9 @@ class Workout {
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
       months[this.date.getMonth()]
     } ${this.date.getDate()}`;
+  }
+  click() {
+    this.clicks++;
   }
 }
 class Running extends Workout {
@@ -66,12 +70,15 @@ class Cycling extends Workout {
 }
 class App {
   #map;
+  #zoomLevel = 13;
   #mapEvent;
   #workouts = [];
   constructor() {
+    this._getLocalStoarge();
     this._getPosition();
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this._scrollToPlace.bind(this));
   }
   _getPosition() {
     if (navigator.geolocation)
@@ -86,7 +93,7 @@ class App {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
     const coords = [latitude, longitude];
-    this.#map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map').setView(coords, this.#zoomLevel);
 
     L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution:
@@ -94,6 +101,10 @@ class App {
     }).addTo(this.#map);
 
     this.#map.on('click', this._showForm.bind(this));
+
+    this.#workouts.forEach(item => {
+      this._renderWorkoutMarker(item);
+    });
   }
   _showForm(mapEv) {
     this.#mapEvent = mapEv;
@@ -146,6 +157,7 @@ class App {
     this.#workouts.push(workout);
     this._renderWorkoutMarker(workout);
     this._rinderWorkout(workout);
+    this._setLocalStorage();
     this._hideForm();
   }
   _renderWorkoutMarker(workout) {
@@ -216,6 +228,98 @@ class App {
       `;
       form.insertAdjacentHTML('afterend', main);
     }
+  }
+
+  _scrollToPlace(event) {
+    console.log('Current workouts:', this.#workouts);
+    if (!this.#map) return;
+    const workoutEl = event.target.closest('.workout');
+    if (!workoutEl) return;
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+
+    if (!workout) {
+      console.log(`Workout not found for id: ${workoutEl.dataset.id}`);
+      console.log('Current workouts:', this.#workouts);
+      return;
+    }
+
+    console.log('Selected workout:', workout);
+
+    if (!workout.coords) {
+      console.log(`Coords not defined for workout with id: ${workoutId}`);
+      return;
+    }
+    this.#map.setView(workout.coords, this.#zoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+    workout.click();
+  }
+  _getLocalStoarge() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+    try {
+      const data = JSON.parse(localStorage.getItem('workouts')) || [];
+      this.#workouts = data.map(workoutData => {
+        if (workoutData.type === 'running') {
+          return new Running(
+            workoutData.coords,
+            workoutData.distance,
+            workoutData.duration,
+            workoutData.cadence
+          );
+        } else if (workoutData.type === 'cycling') {
+          return new Cycling(
+            workoutData.coords,
+            workoutData.distance,
+            workoutData.duration,
+            workoutData.elevationGain
+          );
+        }
+      });
+      console.log('Workouts loaded from localStorage:', this.#workouts);
+    } catch (error) {
+      console.error('Error loading workouts from localStorage:', error);
+      this.#workouts = [];
+    }
+  }
+  _setLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts')) || [];
+    this.#workouts = data.map(workoutData => {
+      if (workoutData.type === 'running') {
+        return new Running(
+          workoutData.coords,
+          workoutData.distance,
+          workoutData.duration,
+          workoutData.cadence
+        );
+      } else if (workoutData.type === 'cycling') {
+        return new Cycling(
+          workoutData.coords,
+          workoutData.distance,
+          workoutData.duration,
+          workoutData.elevationGain
+        );
+      }
+    });
+    if (!data) return;
+    this.#workouts = data;
+    this.#workouts.forEach(work => {
+      this._rinderWorkout(work);
+    });
+    console.log('Workouts loaded from localStorage:', this.#workouts);
+  }
+  catch(error) {
+    console.error('Error loading workouts from localStorage:', error);
+    this.#workouts = [];
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }
 const app = new App();
