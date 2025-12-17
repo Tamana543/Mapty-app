@@ -46,8 +46,81 @@ Mapty-app-main/
 
 ---
 
-###### What is this repo's hidden  secret ^__^ ??
+
+## ▶️ Getting Started
+
+### Run Locally
+
+No build tools required.
+
+```bash
+git clone https://github.com/your-username/mapty-app.git
+cd mapty-app
+open index.html
+```
+
+> ⚠️ **Important:** Geolocation works best when running the app through a local server.
+
+You can use:
+```bash
+npx serve
+```
+
+or VS Code Live Server extension.
+
+---
+
+## 🧠 Architecture & Concepts
+
+This project emphasizes **Object-Oriented Programming (OOP)** in JavaScript:
+
+- **Workout** base class
+- **Running** and **Cycling** subclasses
+- Encapsulation of workout data and methods
+
+Core concepts covered:
+- Classes & inheritance
+- Method chaining
+- Private fields & methods
+- Event handling
+- Working with external libraries
+
+---
+
+## 📸 Preview
+
+![Project Overwiew](https://github.com/user-attachments/assets/37a83e53-7682-4baa-a470-090026de59a4)
+
+
+---
+
+## 📌 Learning Outcomes
+
+- JavaScript OOP in real applications
+- Browser Geolocation API
+- Working with third-party libraries (Leaflet)
+- State persistence with LocalStorage
+- Clean and readable code structure
+
+---
+
+## 📄 License
+
+This project is for **educational purposes**.
+
+---
+
+## 👤 Author
+
+**Tamana**  
+Front-End Developer | JavaScript Learner
+
+---
+
+If you found this project useful, consider ⭐ starring the repository.
 
 [Live](https://tamana543.github.io/Mapty-app/)
 
-![Project Overwiew](https://github.com/user-attachments/assets/37a83e53-7682-4baa-a470-090026de59a4)
+
+###### What is this repo's hidden  secret ^__^ ??
+
