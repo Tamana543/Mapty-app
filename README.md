@@ -1,6 +1,50 @@
-#### Mapty Application 
+# Mapty App 🗺️🏃‍♂️🚴‍♀️
 
-A web application for measuring your sports (cyclicng and running) 
+A **workout tracking web application** that allows users to log running and cycling workouts directly on an interactive map. Built with **vanilla JavaScript**, this project focuses on **object-oriented programming (OOP)**, **geolocation**, and **map-based user interaction**.
+
+The app uses the browser’s Geolocation API and the Leaflet library to deliver a realistic, real-world experience.
+
+---
+
+## 🚀 Features
+
+- 📍 Get current location using the Geolocation API
+- 🗺️ Interactive map powered by Leaflet
+- 🏃 Log running workouts (distance, duration, cadence)
+- 🚴 Log cycling workouts (distance, duration, elevation gain)
+- 🧾 Display workouts in a list with detailed stats
+- 🔁 Click on a workout to move the map to its location
+- 💾 Persist workouts using LocalStorage
+- 🧠 Built with JavaScript OOP principles
+
+---
+
+## 🛠️ Tech Stack
+
+- **HTML5**
+- **CSS3**
+- **JavaScript (ES6+)**
+- **Leaflet.js**
+- **Geolocation API**
+- **LocalStorage**
+
+---
+
+## 🧩 Project Structure
+
+```
+Mapty-app-main/
+│
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js        # Main application logic (OOP-based)
+├── img/                 # Icons and images
+└── README.md
+```
+
+---
 
 ###### What is this repo's hidden  secret ^__^ ??
 
