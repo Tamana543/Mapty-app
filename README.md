@@ -112,7 +112,8 @@ This project is for **educational purposes**.
 
 ## 👤 Author
 
-**Tamana**  
+**Tamana\<ReginaJS/\>** 
+
 Front-End Developer | JavaScript Learner
 
 ---
